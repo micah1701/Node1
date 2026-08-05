@@ -4,3 +4,8 @@ dist/
 .env
 .vscode
 .bolt
+
+
+#Ignore vscode AI rules
+.github\instructions\codacy.instructions.md
+.github/
