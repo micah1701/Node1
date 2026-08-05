@@ -42,7 +42,7 @@ router.get(
 
 router.post(
   '/refresh-token',
-  authenticate,
+  validate([body('refreshToken').notEmpty().withMessage('Refresh token is required')]),
   authController.refreshToken
 );
 

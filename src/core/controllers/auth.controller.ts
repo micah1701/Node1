@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 import { ApiError } from '../middlewares/error.middleware';
 import { HttpStatus, LoginRequest, RegisterRequest, ApiResponse, TokenResponse } from '../types';
-import { generateToken, generateRefreshToken } from '../utils/jwt.utils';
+import { generateToken, generateRefreshToken, verifyToken } from '../utils/jwt.utils';
 import { logger } from '../utils/logger';
 import { db } from '../utils/db';
 import { config } from '../config';
@@ -171,30 +171,23 @@ export const getProfile = async (req: Request, res: Response, next: NextFunction
 };
 
 /**
- * Refresh access token
+ * Refresh access token using a valid refresh token
  */
 export const refreshToken = (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (!req.user) {
-      throw new ApiError(HttpStatus.UNAUTHORIZED, 'Not authenticated');
-    }
-    
-    const payload = { 
-      id: req.user.id, 
-      email: req.user.email, 
-      role: req.user.role 
-    };
-    
-    const accessToken = generateToken(payload);
-    
+    const { refreshToken: token } = req.body;
+
+    const payload = verifyToken(token);
+    const accessToken = generateToken({ id: payload.id, email: payload.email, role: payload.role });
+
     const response: ApiResponse<{ accessToken: string }> = {
       success: true,
       data: { accessToken },
       message: 'Token refreshed successfully'
     };
-    
+
     res.status(HttpStatus.OK).json(response);
   } catch (error) {
-    next(error);
+    next(new ApiError(HttpStatus.UNAUTHORIZED, 'Invalid or expired refresh token'));
   }
 };
