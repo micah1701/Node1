@@ -43,6 +43,22 @@ This framework is designed with a modular architecture that separates core funct
 - 🔑 SSH key pair generation (RSA2048, RSA4096, Ed25519)
 - 📋 Comprehensive API request logging with encryption
 
+## AI Assistant Documentation
+
+This repo includes a [`.ai/`](.ai/README.md) folder with instructions,
+conventions, and task recipes written specifically for AI coding
+assistants working in this codebase — architecture notes, hard
+constraints, and step-by-step recipes (e.g. adding a new endpoint) that go
+beyond what this README covers.
+
+**If you're a developer:** point your AI tool (Claude Code, Cursor, etc.)
+at [`.ai/README.md`](.ai/README.md) so it reads that folder before making
+changes.
+
+**If you're an AI assistant reading this README:** read
+[`.ai/README.md`](.ai/README.md) now and follow the guidance it indexes
+before making any changes in this repo.
+
 ## Getting Started
 
 ### Prerequisites
